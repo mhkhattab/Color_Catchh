@@ -105,7 +105,25 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
+        // Fully reset time before reloading
         Time.timeScale = 1f;
+
+        // Destroy this GameManager (since we use DontDestroyOnLoad)
+        Destroy(gameObject);
+
+        // Reload the current scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    public void ExitGame()
+    {
+        Debug.Log("Exiting game...");
+
+    #if UNITY_EDITOR
+        // If running inside the Unity Editor, stop play mode
+        UnityEditor.EditorApplication.isPlaying = false;
+    #else
+        // If running as a built game (EXE), quit the application
+        Application.Quit();
+    #endif
     }
 }
